@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import riotLogo from '../assets/riot.svg';
-import nighthawkLogo from '../assets/Nighthawk.svg';
+import nighthawkLogo from '../assets/nighthawk.svg';
 import hsnLogo from '../assets/Hsn.svg';
 
 const Navigation = () => {

@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { FaTrophy, FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaGamepad, FaClock } from 'react-icons/fa';
 import riotLogo from '../assets/riot.svg';
 import hsnLogo from '../assets/Hsn.svg';
-import nighthawkLogo from '../assets/Nighthawk.svg';
+import nighthawkLogo from '../assets/nighthawk.svg';
 
 const DetailsSection = () => {
   const containerVariants = {
@@ -241,16 +241,16 @@ const DetailsSection = () => {
               className="filter grayscale hover:grayscale-0 transition-all duration-300"
             >
               <div className="w-32 h-32 bg-valorant-white/10 rounded-lg overflow-hidden border border-valorant-cyan/30 flex items-center justify-center p-2">
-                <img 
-                  src="/src/assets/Nighthawk.svg" 
-                  alt="Nighthawk Gaming" 
-                  className="max-w-full max-h-full object-contain"
-                  onLoad={() => console.log('Nighthawk logo loaded with direct path')}
-                  onError={(e) => {
-                    console.error('Direct path failed, trying import:', e);
-                    e.target.src = nighthawkLogo;
-                  }}
-                />
+                    <img 
+                      src="/src/assets/nighthawk.svg" 
+                      alt="Nighthawk Gaming" 
+                      className="max-w-full max-h-full object-contain"
+                      onLoad={() => console.log('Nighthawk logo loaded with direct path')}
+                      onError={(e) => {
+                        console.error('Direct path failed, trying import:', e);
+                        e.target.src = nighthawkLogo;
+                      }}
+                    />
               </div>
               <p className="text-valorant-white mt-2 font-exo">Nighthawk Gaming</p>
             </motion.div>
