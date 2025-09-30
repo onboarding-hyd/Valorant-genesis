@@ -98,7 +98,7 @@ const RegistrationForm = () => {
       }
 
       // Google Sheets Web App URL
-      const googleSheetsURL = 'https://script.google.com/macros/s/AKfycbz3iv8G3iEA1_ZT2LlIavvwFlvVW23Bdf0YWTtniv8d3TnW4thb5cH7U5mgtLE00AzL/exec';
+      const googleSheetsURL = 'https://script.google.com/macros/s/AKfycbxtGcrxqacLZjSmirPp8zwuuU96AVxJrZC8OuBf8A7ePO3Go8haZXOAdvBNXrUvfk0q/exec';
       
       // Prepare data as JSON to match Google Apps Script expectations
       const submissionData = {
