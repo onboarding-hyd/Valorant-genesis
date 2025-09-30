@@ -15,6 +15,7 @@ const RegistrationForm = () => {
     formState: { errors },
     setValue,
     watch,
+    clearErrors,
   } = useForm();
 
   const validateFile = (file) => {
@@ -41,7 +42,8 @@ const RegistrationForm = () => {
         return;
       }
       setUploadedFile(file);
-      setValue('photograph', file);
+      setValue('photograph', file, { shouldValidate: true });
+      clearErrors('photograph');
     }
   };
 
@@ -57,7 +59,8 @@ const RegistrationForm = () => {
         return;
       }
       setUploadedFile(file);
-      setValue('photograph', file);
+      setValue('photograph', file, { shouldValidate: true });
+      clearErrors('photograph');
     }
   };
 
@@ -77,11 +80,7 @@ const RegistrationForm = () => {
     setSubmitStatus(null);
 
     try {
-      // Validate required fields
-      if (!data.fullName || !data.riotId || !data.trackerLink || !data.email || !data.mobile || !data.city || !data.agreeToTerms) {
-        throw new Error('Please fill in all required fields and agree to terms');
-      }
-
+      // Additional validation for photograph (react-hook-form should handle other fields)
       if (!uploadedFile) {
         throw new Error('Please upload your photograph');
       }
