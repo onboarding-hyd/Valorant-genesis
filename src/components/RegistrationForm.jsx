@@ -98,56 +98,53 @@ const RegistrationForm = () => {
       }
 
       // Google Sheets Web App URL
-      const googleSheetsURL = 'https://script.google.com/macros/s/AKfycbx7SZzUiW5PX4o3yC4miJVOyN5w3HrnDXO80I0dUr9x_EUUkZQodLhyBanHlXJH6hrM/exec';
+      const googleSheetsURL = 'https://script.google.com/macros/s/AKfycbz3iv8G3iEA1_ZT2LlIavvwFlvVW23Bdf0YWTtniv8d3TnW4thb5cH7U5mgtLE00AzL/exec';
       
-      // Prepare form data for Google Sheets
-      const formData = new FormData();
+      // Prepare data as JSON to match Google Apps Script expectations
+      const submissionData = {
+        name: data.fullName, // Script expects 'name'
+        riotId: data.riotId,
+        trackerLink: data.trackerLink,
+        email: data.email,
+        mobileNumber: data.mobile, // Script expects 'mobileNumber'
+        city: data.city,
+        agreeToTerms: data.agreeToTerms ? 'Yes' : 'No',
+        submissionDate: new Date().toLocaleString()
+      };
       
-      // Add all form fields
-      formData.append('fullName', data.fullName);
-      formData.append('riotId', data.riotId);
-      formData.append('trackerLink', data.trackerLink);
-      formData.append('email', data.email);
-      formData.append('mobile', data.mobile);
-      formData.append('city', data.city);
-      formData.append('agreeToTerms', data.agreeToTerms ? 'Yes' : 'No');
-      formData.append('submissionDate', new Date().toLocaleString());
-      
-      // Handle file upload - send file info instead of base64 to avoid size issues
+      // Handle file upload - convert to base64 as expected by script
       if (uploadedFile) {
-        formData.append('photographName', uploadedFile.name);
-        formData.append('photographSize', uploadedFile.size);
-        formData.append('photographType', uploadedFile.type);
-        formData.append('hasPhotograph', 'Yes');
+        const reader = new FileReader();
+        const fileBase64 = await new Promise((resolve, reject) => {
+          reader.onload = () => {
+            // Remove the data URL prefix to get just the base64 data
+            const base64Data = reader.result.split(',')[1];
+            resolve(base64Data);
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(uploadedFile);
+        });
         
-        // Try to include base64 but don't fail if it's too large
-        try {
-          const reader = new FileReader();
-          const fileBase64 = await new Promise((resolve, reject) => {
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = reject;
-            reader.readAsDataURL(uploadedFile);
-          });
-          // Only include if file is under 1MB to avoid Google Sheets limits
-          if (uploadedFile.size < 1024 * 1024) {
-            formData.append('photograph', fileBase64);
-          }
-        } catch (fileError) {
-          console.log('File processing skipped due to size/error:', fileError);
-        }
-      } else {
-        formData.append('hasPhotograph', 'No');
+        submissionData.fileData = fileBase64;
+        submissionData.filename = uploadedFile.name;
+        submissionData.mimeType = uploadedFile.type;
       }
 
       console.log('Submitting form data to Google Sheets...');
-      console.log('Form data entries:', Array.from(formData.entries()).map(([key, value]) => 
-        key === 'photograph' ? [key, 'base64 data'] : [key, value]
-      ));
+      console.log('Submission data:', { ...submissionData, fileData: submissionData.fileData ? 'base64 data' : 'none' });
 
-      // Submit to Google Sheets with proper headers and CORS handling
-      await fetch(googleSheetsURL, {
+      // Submit to Google Sheets using URLSearchParams for better compatibility
+      const formParams = new URLSearchParams();
+      Object.keys(submissionData).forEach(key => {
+        formParams.append(key, submissionData[key]);
+      });
+
+      const response = await fetch(googleSheetsURL, {
         method: 'POST',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formParams,
         mode: 'no-cors' // Required for Google Apps Script
       });
 
