@@ -72,37 +72,76 @@ const RegistrationForm = () => {
   };
 
   const onSubmit = async (data) => {
+    console.log('Form submission started with data:', data);
     setIsSubmitting(true);
     setSubmitStatus(null);
 
     try {
-      // Create FormData object
+      // Validate required fields
+      if (!data.fullName || !data.riotId || !data.trackerLink || !data.email || !data.mobile || !data.city || !data.agreeToTerms) {
+        throw new Error('Please fill in all required fields and agree to terms');
+      }
+
+      if (!uploadedFile) {
+        throw new Error('Please upload your photograph');
+      }
+
+      // Google Sheets Web App URL
+      const googleSheetsURL = 'https://script.google.com/macros/s/AKfycbx7SZzUiW5PX4o3yC4miJVOyN5w3HrnDXO80I0dUr9x_EUUkZQodLhyBanHlXJH6hrM/exec';
+      
+      // Prepare form data for Google Sheets
       const formData = new FormData();
       
-      // Append all form fields
-      Object.keys(data).forEach(key => {
-        if (key === 'photograph' && uploadedFile) {
-          formData.append(key, uploadedFile);
-        } else {
-          formData.append(key, data[key]);
-        }
+      // Add all form fields
+      formData.append('fullName', data.fullName);
+      formData.append('riotId', data.riotId);
+      formData.append('trackerLink', data.trackerLink);
+      formData.append('email', data.email);
+      formData.append('mobile', data.mobile);
+      formData.append('city', data.city);
+      formData.append('agreeToTerms', data.agreeToTerms ? 'Yes' : 'No');
+      formData.append('submissionDate', new Date().toLocaleString());
+      
+      // Handle file upload (convert to base64)
+      if (uploadedFile) {
+        const reader = new FileReader();
+        const fileBase64 = await new Promise((resolve, reject) => {
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(uploadedFile);
+        });
+        formData.append('photograph', fileBase64);
+        formData.append('photographName', uploadedFile.name);
+        formData.append('photographSize', uploadedFile.size);
+      }
+
+      console.log('Submitting form data to Google Sheets...');
+
+      // Submit to Google Sheets with timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
+      await fetch(googleSheetsURL, {
+        method: 'POST',
+        body: formData,
+        signal: controller.signal
       });
 
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      console.log('Form Data:', Object.fromEntries(formData));
+      clearTimeout(timeoutId);
+
+      console.log('Form submitted successfully to Google Sheets');
       setSubmitStatus('success');
       
-      // Reset form after successful submission
-      setTimeout(() => {
-        setSubmitStatus(null);
-        setUploadedFile(null);
-      }, 3000);
+      // Keep success message permanently (don't auto-clear)
+      setUploadedFile(null);
       
     } catch (error) {
       console.error('Submission error:', error);
       setSubmitStatus('error');
+      // Clear error after 5 seconds
+      setTimeout(() => {
+        setSubmitStatus(null);
+      }, 5000);
     } finally {
       setIsSubmitting(false);
     }
@@ -449,22 +488,26 @@ const RegistrationForm = () => {
                     : 'bg-red-500/20 border border-red-500'
                 }`}
               >
-                <div className="flex items-center justify-center mb-3">
+                <div className="flex flex-col items-center justify-center mb-4">
                   {submitStatus === 'success' ? (
-                    <FaCheckCircle className="text-3xl text-green-500 mr-3" />
+                    <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mb-4">
+                      <FaCheckCircle className="text-3xl text-white" />
+                    </div>
                   ) : (
-                    <FaExclamationTriangle className="text-3xl text-red-500 mr-3" />
+                    <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mb-4">
+                      <FaExclamationTriangle className="text-3xl text-white" />
+                    </div>
                   )}
-                  <h3 className={`text-xl font-orbitron font-bold ${
+                  <h3 className={`text-2xl font-orbitron font-bold text-center ${
                     submitStatus === 'success' ? 'text-green-500' : 'text-red-500'
                   }`}>
-                    {submitStatus === 'success' ? 'Registration Successful!' : 'Registration Failed'}
+                    {submitStatus === 'success' ? 'AGENT REGISTRATION SUCCESSFUL' : 'REGISTRATION FAILED'}
                   </h3>
                 </div>
-                <p className="text-valorant-white">
+                <p className="text-valorant-white text-center text-lg">
                   {submitStatus === 'success' 
-                    ? 'Welcome to the HSN VALORANT Hyderabad Showdown! Check your email for confirmation details.' 
-                    : 'There was an error processing your registration. Please try again.'}
+                    ? 'Welcome to the VALORANT GENESIS tournament! Your registration has been successfully submitted. You will receive confirmation details soon.' 
+                    : 'There was an error processing your registration. Please check all required fields and try again.'}
                 </p>
               </motion.div>
             )}

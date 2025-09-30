@@ -44,21 +44,8 @@ const Navigation = () => {
           />
         </div>
 
-        {/* Right side - HSN Logo and Video */}
+        {/* Right side - Video and HSN Logo */}
         <div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center space-x-3 pr-2 h-full">
-          {/* HSN Logo */}
-          <motion.img
-            src={hsnLogo}
-            alt="HSN"
-            className="h-16 w-auto object-contain cursor-pointer max-h-full"
-            whileHover={{ 
-              scale: 1.05,
-              rotate: 2,
-              filter: "brightness(1.2)",
-            }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-          />
           {/* Video */}
           <motion.video
             className="h-16 w-auto object-contain cursor-pointer max-h-full rounded"
@@ -75,6 +62,19 @@ const Navigation = () => {
           >
             <source src="/src/assets/Video Object Remover-1759179848000.mp4" type="video/mp4" />
           </motion.video>
+          {/* HSN Logo */}
+          <motion.img
+            src={hsnLogo}
+            alt="HSN"
+            className="h-16 w-auto object-contain cursor-pointer max-h-full"
+            whileHover={{ 
+              scale: 1.05,
+              rotate: 2,
+              filter: "brightness(1.2)",
+            }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+          />
         </div>
 
         <div className="flex items-center justify-center w-full">
