@@ -133,19 +133,18 @@ const RegistrationForm = () => {
       console.log('Submitting form data to Google Sheets...');
       console.log('Submission data:', { ...submissionData, fileData: submissionData.fileData ? 'base64 data' : 'none' });
 
-      // Submit to Google Sheets using URLSearchParams for better compatibility
-      const formParams = new URLSearchParams();
+      // Create a simple form submission that Google Apps Script can handle
+      const form = new FormData();
       Object.keys(submissionData).forEach(key => {
-        formParams.append(key, submissionData[key]);
+        if (submissionData[key] !== undefined) {
+          form.append(key, submissionData[key]);
+        }
       });
 
+      // Submit using simple form POST
       const response = await fetch(googleSheetsURL, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: formParams,
-        mode: 'no-cors' // Required for Google Apps Script
+        body: form
       });
 
       // With no-cors mode, we can't read the response, so we assume success
