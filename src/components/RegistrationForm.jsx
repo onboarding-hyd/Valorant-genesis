@@ -16,6 +16,7 @@ const RegistrationForm = () => {
     setValue,
     watch,
     clearErrors,
+    setError,
   } = useForm();
 
   const validateFile = (file) => {
@@ -39,11 +40,16 @@ const RegistrationForm = () => {
       const error = validateFile(file);
       if (error) {
         alert(error);
+        setUploadedFile(null);
+        setValue('photograph', null);
         return;
       }
       setUploadedFile(file);
       setValue('photograph', file, { shouldValidate: true });
       clearErrors('photograph');
+    } else {
+      setUploadedFile(null);
+      setValue('photograph', null);
     }
   };
 
@@ -56,6 +62,8 @@ const RegistrationForm = () => {
       const error = validateFile(file);
       if (error) {
         alert(error);
+        setUploadedFile(null);
+        setValue('photograph', null);
         return;
       }
       setUploadedFile(file);
@@ -82,6 +90,10 @@ const RegistrationForm = () => {
     try {
       // Additional validation for photograph (react-hook-form should handle other fields)
       if (!uploadedFile) {
+        setError('photograph', { 
+          type: 'required', 
+          message: 'Photograph is required' 
+        });
         throw new Error('Please upload your photograph');
       }
 
@@ -352,7 +364,7 @@ const RegistrationForm = () => {
                 }`}
               >
                 <input
-                  {...register('photograph', { required: 'Photograph is required' })}
+                  {...register('photograph')}
                   type="file"
                   accept="image/jpeg,image/png"
                   onChange={handleFileChange}
@@ -382,13 +394,13 @@ const RegistrationForm = () => {
                   )}
                 </div>
               </div>
-              
-              {errors.photograph && (
-                <p className="text-valorant-red text-sm mt-2 flex items-center">
-                  <FaExclamationTriangle className="mr-1" />
-                  {errors.photograph.message}
-                </p>
-              )}
+                  
+                  {errors.photograph && (
+                    <p className="text-valorant-red text-sm mt-2 flex items-center">
+                      <FaExclamationTriangle className="mr-1" />
+                      {errors.photograph.message}
+                    </p>
+                  )}
               
               <p className="text-valorant-white/80 text-sm mt-3 leading-relaxed">
                 Please upload a clear, recent photograph. Your face must be clearly visible for identification purposes. 
