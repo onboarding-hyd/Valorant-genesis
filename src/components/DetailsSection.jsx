@@ -79,7 +79,7 @@ const DetailsSection = () => {
   ];
 
   return (
-    <section className="py-20 bg-valorant-dark relative overflow-hidden">
+    <section className="py-10 md:py-20 bg-valorant-dark relative overflow-hidden">
       {/* Animated Background Pattern */}
       <motion.div
         animate={{
@@ -108,18 +108,18 @@ const DetailsSection = () => {
         }}
       />
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-8 md:mb-16"
         >
-          <h2 className="text-4xl md:text-6xl font-orbitron font-bold text-valorant-white mb-6">
+          <h2 className="text-2xl md:text-4xl lg:text-6xl font-orbitron font-bold text-valorant-white mb-4 md:mb-6 px-2">
             TOURNAMENT <span className="text-valorant-red">DETAILS</span>
           </h2>
-          <p className="text-xl text-valorant-cyan max-w-3xl mx-auto">
+          <p className="text-sm md:text-xl text-valorant-cyan max-w-3xl mx-auto px-4">
             Get ready for the ultimate VALORANT experience in Hyderabad. 
             Here's everything you need to know about the competition.
           </p>
@@ -131,7 +131,7 @@ const DetailsSection = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 mb-10 md:mb-20 px-2 md:px-0"
         >
           {details.map((detail, index) => (
             <motion.div
@@ -141,21 +141,21 @@ const DetailsSection = () => {
                 scale: 1.05,
                 rotateY: 5,
               }}
-              className="card-hover bg-valorant-gray/50 backdrop-blur-sm p-8 rounded-lg border border-valorant-cyan/30 relative overflow-hidden group"
+              className="card-hover bg-valorant-gray/50 backdrop-blur-sm p-4 md:p-8 rounded-lg border border-valorant-cyan/30 relative overflow-hidden group"
             >
               {/* Card Glow Effect */}
               <motion.div
                 className="absolute inset-0 bg-gradient-to-br from-valorant-red/5 to-valorant-cyan/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
               />
               
-              <detail.icon className="text-5xl text-valorant-cyan mb-6 relative z-10" />
-              <h3 className="text-2xl font-orbitron font-bold text-valorant-white mb-4 relative z-10">
+              <detail.icon className="text-3xl md:text-5xl text-valorant-cyan mb-3 md:mb-6 relative z-10" />
+              <h3 className="text-lg md:text-2xl font-orbitron font-bold text-valorant-white mb-2 md:mb-4 relative z-10">
                 {detail.title}
               </h3>
-              <p className="text-valorant-cyan text-lg mb-3 relative z-10">
+              <p className="text-valorant-cyan text-sm md:text-lg mb-2 md:mb-3 relative z-10">
                 {detail.description}
               </p>
-              <p className="text-valorant-white/80 text-sm relative z-10">
+              <p className="text-valorant-white/80 text-xs md:text-sm relative z-10">
                 {detail.details}
               </p>
               
@@ -180,9 +180,9 @@ const DetailsSection = () => {
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-center"
+          className="text-center px-4"
         >
-          <h3 className="text-3xl md:text-4xl font-orbitron font-bold text-valorant-white mb-12">
+          <h3 className="text-xl md:text-3xl lg:text-4xl font-orbitron font-bold text-valorant-white mb-6 md:mb-12">
             OFFICIAL <span className="text-valorant-cyan">PARTNERS</span>
           </h3>
           
@@ -191,7 +191,7 @@ const DetailsSection = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="flex flex-col md:flex-row justify-center items-center space-y-8 md:space-y-0 md:space-x-16"
+            className="flex flex-col md:flex-row justify-center items-center space-y-6 md:space-y-0 md:space-x-16"
           >
             {/* HSN Logo */}
             <motion.div
@@ -202,7 +202,7 @@ const DetailsSection = () => {
               }}
               className="filter grayscale hover:grayscale-0 transition-all duration-300"
             >
-              <div className="w-32 h-32 bg-valorant-white/10 rounded-lg overflow-hidden border border-valorant-cyan/30">
+              <div className="w-24 h-24 md:w-32 md:h-32 bg-valorant-white/10 rounded-lg overflow-hidden border border-valorant-cyan/30">
                 <img 
                   src={hsnLogo} 
                   alt="HSN" 
@@ -221,7 +221,7 @@ const DetailsSection = () => {
               }}
               className="filter grayscale hover:grayscale-0 transition-all duration-300"
             >
-              <div className="w-32 h-32 bg-valorant-white/10 rounded-lg overflow-hidden border border-valorant-cyan/30">
+              <div className="w-24 h-24 md:w-32 md:h-32 bg-valorant-white/10 rounded-lg overflow-hidden border border-valorant-cyan/30">
                 <img 
                   src={riotLogo} 
                   alt="Riot Games" 

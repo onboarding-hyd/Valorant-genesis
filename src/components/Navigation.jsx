@@ -15,12 +15,12 @@ const Navigation = () => {
     <nav className="fixed top-0 left-0 w-full bg-black border-b border-valorant-red/30 z-50 shadow-lg">
       <div className="px-0 py-2 relative w-full h-20 overflow-hidden">
         {/* Left side logos */}
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center space-x-4 pl-2 h-full">
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center space-x-2 md:space-x-4 pl-1 md:pl-2 h-full">
           {/* Riot Logo */}
           <motion.img
             src={riotLogo}
             alt="Riot Games"
-            className="h-16 w-auto object-contain cursor-pointer max-h-full"
+            className="h-10 md:h-16 w-auto object-contain cursor-pointer max-h-full"
             whileHover={{ 
               scale: 1.05,
               rotate: 2,
@@ -33,7 +33,7 @@ const Navigation = () => {
           <motion.img
             src={nighthawkLogo}
             alt="Nighthawk Gaming"
-            className="h-16 w-auto object-contain cursor-pointer max-h-full"
+            className="h-10 md:h-16 w-auto object-contain cursor-pointer max-h-full"
             whileHover={{ 
               scale: 1.05,
               rotate: -2,
@@ -45,10 +45,10 @@ const Navigation = () => {
         </div>
 
         {/* Right side - Video and HSN Logo */}
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center space-x-3 pr-2 h-full">
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center space-x-1 md:space-x-3 pr-1 md:pr-2 h-full">
           {/* Video */}
           <motion.video
-            className="h-16 w-auto object-contain cursor-pointer max-h-full rounded"
+            className="h-10 md:h-16 w-auto object-contain cursor-pointer max-h-full rounded"
             autoPlay
             muted
             loop
@@ -66,7 +66,7 @@ const Navigation = () => {
           <motion.img
             src={hsnLogo}
             alt="HSN"
-            className="h-16 w-auto object-contain cursor-pointer max-h-full"
+            className="h-10 md:h-16 w-auto object-contain cursor-pointer max-h-full"
             whileHover={{ 
               scale: 1.05,
               rotate: 2,
@@ -79,10 +79,10 @@ const Navigation = () => {
 
         <div className="flex items-center justify-center w-full">
           {/* Navigation Links */}
-          <div className="flex items-center justify-center space-x-16">
+          <div className="flex items-center justify-center space-x-4 md:space-x-16">
             <Link 
               to="/" 
-              className={`px-8 py-4 rounded-lg font-exo text-xl font-semibold transition-all duration-300 ${
+              className={`px-3 py-2 md:px-8 md:py-4 rounded-lg font-exo text-sm md:text-xl font-semibold transition-all duration-300 ${
                 isActive('/') 
                   ? 'bg-valorant-red text-white shadow-glow' 
                   : 'text-valorant-white hover:text-valorant-cyan hover:bg-valorant-gray/50'
@@ -92,7 +92,7 @@ const Navigation = () => {
             </Link>
             <Link 
               to="/details" 
-              className={`px-8 py-4 rounded-lg font-exo text-xl font-semibold transition-all duration-300 ${
+              className={`px-3 py-2 md:px-8 md:py-4 rounded-lg font-exo text-sm md:text-xl font-semibold transition-all duration-300 ${
                 isActive('/details') 
                   ? 'bg-valorant-red text-white shadow-glow' 
                   : 'text-valorant-white hover:text-valorant-cyan hover:bg-valorant-gray/50'
@@ -102,7 +102,7 @@ const Navigation = () => {
             </Link>
             <Link 
               to="/register" 
-              className={`px-8 py-4 rounded-lg font-exo text-xl font-semibold transition-all duration-300 ${
+              className={`px-3 py-2 md:px-8 md:py-4 rounded-lg font-exo text-sm md:text-xl font-semibold transition-all duration-300 ${
                 isActive('/register') 
                   ? 'bg-valorant-red text-white shadow-glow' 
                   : 'text-valorant-white hover:text-valorant-cyan hover:bg-valorant-gray/50'

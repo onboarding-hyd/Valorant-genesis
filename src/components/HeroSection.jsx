@@ -151,34 +151,34 @@ const HeroSection = () => {
         {/* Info Blocks */}
         <motion.div
           variants={itemVariants}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"
+          className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8 md:mb-12 px-4 md:px-0"
         >
-          <div className="flex flex-col items-center p-6 bg-black/30 backdrop-blur-sm rounded-lg border border-valorant-cyan/30">
-            <FaClock className="text-4xl text-valorant-cyan mb-3" />
-            <h3 className="text-lg font-bold text-valorant-white mb-2">Date</h3>
-            <p className="text-valorant-white">October 11 - TBD, 2025</p>
+          <div className="flex flex-col items-center p-4 md:p-6 bg-black/30 backdrop-blur-sm rounded-lg border border-valorant-cyan/30">
+            <FaClock className="text-2xl md:text-4xl text-valorant-cyan mb-2 md:mb-3" />
+            <h3 className="text-sm md:text-lg font-bold text-valorant-white mb-1 md:mb-2">Date</h3>
+            <p className="text-valorant-white text-xs md:text-base text-center">October 11 - TBD, 2025</p>
           </div>
-          <div className="flex flex-col items-center p-6 bg-black/30 backdrop-blur-sm rounded-lg border border-valorant-cyan/30">
-            <FaTrophy className="text-4xl text-valorant-cyan mb-3" />
-            <h3 className="text-lg font-bold text-valorant-white mb-2">Prize Pool</h3>
-            <p className="text-valorant-white">₹1,00,000 INR</p>
+          <div className="flex flex-col items-center p-4 md:p-6 bg-black/30 backdrop-blur-sm rounded-lg border border-valorant-cyan/30">
+            <FaTrophy className="text-2xl md:text-4xl text-valorant-cyan mb-2 md:mb-3" />
+            <h3 className="text-sm md:text-lg font-bold text-valorant-white mb-1 md:mb-2">Prize Pool</h3>
+            <p className="text-valorant-white text-xs md:text-base text-center">₹1,00,000 INR</p>
           </div>
-          <div className="flex flex-col items-center p-6 bg-black/30 backdrop-blur-sm rounded-lg border border-valorant-cyan/30">
-            <FaMapMarkerAlt className="text-4xl text-valorant-cyan mb-3" />
-            <h3 className="text-lg font-bold text-valorant-white mb-2">Location</h3>
-            <p className="text-valorant-white">Nighthawk Gaming Cafe</p>
+          <div className="flex flex-col items-center p-4 md:p-6 bg-black/30 backdrop-blur-sm rounded-lg border border-valorant-cyan/30">
+            <FaMapMarkerAlt className="text-2xl md:text-4xl text-valorant-cyan mb-2 md:mb-3" />
+            <h3 className="text-sm md:text-lg font-bold text-valorant-white mb-1 md:mb-2">Location</h3>
+            <p className="text-valorant-white text-xs md:text-base text-center">Nighthawk Gaming Cafe</p>
           </div>
         </motion.div>
 
         {/* Countdown Timer */}
         <motion.div
           variants={itemVariants}
-          className="mb-12"
+          className="mb-8 md:mb-12 px-4 md:px-0"
         >
-          <h3 className="text-2xl md:text-3xl font-orbitron font-bold text-valorant-white mb-6">
+          <h3 className="text-lg md:text-2xl lg:text-3xl font-orbitron font-bold text-valorant-white mb-4 md:mb-6 text-center">
             Registration Ends In:
           </h3>
-          <div className="flex justify-center space-x-4 md:space-x-8">
+          <div className="flex justify-center space-x-2 md:space-x-4 lg:space-x-8">
             {Object.entries(timeLeft).map(([unit, value]) => (
               <motion.div
                 key={unit}
@@ -190,7 +190,7 @@ const HeroSection = () => {
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
-                className="flex flex-col items-center p-4 bg-black/50 backdrop-blur-sm rounded-lg border border-valorant-red/50"
+                className="flex flex-col items-center p-2 md:p-4 bg-black/50 backdrop-blur-sm rounded-lg border border-valorant-red/50"
               >
                 <motion.div
                   animate={{
@@ -205,11 +205,11 @@ const HeroSection = () => {
                     repeat: Infinity,
                     ease: "easeInOut",
                   }}
-                  className="text-3xl md:text-5xl font-orbitron font-bold text-valorant-red"
+                  className="text-xl md:text-3xl lg:text-5xl font-orbitron font-bold text-valorant-red"
                 >
                   {String(value).padStart(2, '0')}
                 </motion.div>
-                <div className="text-sm md:text-base text-valorant-white uppercase font-exo">
+                <div className="text-xs md:text-sm lg:text-base text-valorant-white uppercase font-exo">
                   {unit}
                 </div>
               </motion.div>
@@ -220,7 +220,7 @@ const HeroSection = () => {
         {/* CTA Buttons */}
         <motion.div
           variants={itemVariants}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+          className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center px-4 md:px-0"
         >
           <Link to="/details">
             <motion.button
@@ -229,7 +229,7 @@ const HeroSection = () => {
                 boxShadow: "0 0 30px rgba(0, 245, 255, 0.8)",
               }}
               whileTap={{ scale: 0.95 }}
-              className="bg-valorant-cyan/20 border-2 border-valorant-cyan text-valorant-cyan hover:bg-valorant-cyan hover:text-black transition-all duration-300 text-lg md:text-xl px-8 py-4 rounded-lg font-orbitron relative overflow-hidden group min-w-[200px]"
+              className="bg-valorant-cyan/20 border-2 border-valorant-cyan text-valorant-cyan hover:bg-valorant-cyan hover:text-black transition-all duration-300 text-sm md:text-lg lg:text-xl px-6 py-3 md:px-8 md:py-4 rounded-lg font-orbitron relative overflow-hidden group w-full sm:min-w-[180px] md:min-w-[200px]"
             >
               <motion.span
                 className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
@@ -253,7 +253,7 @@ const HeroSection = () => {
                 boxShadow: "0 0 30px rgba(255, 70, 84, 0.8)",
               }}
               whileTap={{ scale: 0.95 }}
-              className="btn-primary text-lg md:text-xl px-8 py-4 rounded-lg font-orbitron relative overflow-hidden group min-w-[200px]"
+              className="btn-primary text-sm md:text-lg lg:text-xl px-6 py-3 md:px-8 md:py-4 rounded-lg font-orbitron relative overflow-hidden group w-full sm:min-w-[180px] md:min-w-[200px]"
             >
               <motion.span
                 className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"

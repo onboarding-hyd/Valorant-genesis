@@ -108,12 +108,12 @@ const RegistrationForm = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-8 md:mb-16"
         >
-          <h2 className="text-4xl md:text-6xl font-orbitron font-bold text-valorant-white mb-6">
+          <h2 className="text-2xl md:text-4xl lg:text-6xl font-orbitron font-bold text-valorant-white mb-4 md:mb-6 px-2">
             AGENT <span className="text-valorant-red">REGISTRATION</span>
           </h2>
-          <p className="text-xl text-valorant-cyan max-w-3xl mx-auto">
+          <p className="text-sm md:text-xl text-valorant-cyan max-w-3xl mx-auto px-4">
             Join the elite ranks of VALORANT competitors. Fill out the form below to secure your spot in the tournament.
           </p>
         </motion.div>
@@ -125,8 +125,8 @@ const RegistrationForm = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="max-w-4xl mx-auto"
         >
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 md:space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
               {/* Full Name */}
               <motion.div whileFocus="focus" variants={inputVariants}>
                 <label className="block text-valorant-white font-orbitron font-bold mb-3 flex items-center">
@@ -348,14 +348,14 @@ const RegistrationForm = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-center mt-10"
+              className="text-center mt-6 md:mt-10 px-4"
             >
               <motion.button
                 type="submit"
                 disabled={isSubmitting}
                 whileHover={!isSubmitting ? { scale: 1.05 } : {}}
                 whileTap={!isSubmitting ? { scale: 0.95 } : {}}
-                className={`btn-primary text-xl px-16 py-6 rounded-lg font-orbitron relative overflow-hidden ${
+                className={`btn-primary text-lg md:text-xl px-8 py-4 md:px-16 md:py-6 rounded-lg font-orbitron relative overflow-hidden w-full sm:w-auto ${
                   isSubmitting ? 'opacity-75 cursor-not-allowed' : ''
                 }`}
               >
@@ -363,7 +363,7 @@ const RegistrationForm = () => {
                   <motion.div
                     animate={{ rotate: 360 }}
                     transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                    className="inline-block w-6 h-6 border-2 border-white border-t-transparent rounded-full mr-3"
+                    className="inline-block w-5 h-5 md:w-6 md:h-6 border-2 border-white border-t-transparent rounded-full mr-3"
                   />
                 ) : null}
                 {isSubmitting ? 'SUBMITTING...' : 'REGISTER NOW'}
