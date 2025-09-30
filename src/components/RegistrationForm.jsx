@@ -6,8 +6,6 @@ import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaGamepad, FaLink, FaUploa
 const RegistrationForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', null
-  const [dragOver, setDragOver] = useState(false);
-  const [uploadedFile, setUploadedFile] = useState(null);
 
   const {
     register,
@@ -19,68 +17,6 @@ const RegistrationForm = () => {
     setError,
   } = useForm();
 
-  const validateFile = (file) => {
-    const allowedTypes = ['image/jpeg', 'image/png'];
-    const maxSize = 5 * 1024 * 1024; // 5MB
-
-    if (!allowedTypes.includes(file.type)) {
-      return 'Only JPEG and PNG files are allowed';
-    }
-
-    if (file.size > maxSize) {
-      return 'File size must be less than 5MB';
-    }
-
-    return null;
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const error = validateFile(file);
-      if (error) {
-        alert(error);
-        setUploadedFile(null);
-        setValue('photograph', null);
-        return;
-      }
-      setUploadedFile(file);
-      setValue('photograph', file, { shouldValidate: true });
-      clearErrors('photograph');
-    } else {
-      setUploadedFile(null);
-      setValue('photograph', null);
-    }
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    setDragOver(false);
-    
-    const file = e.dataTransfer.files[0];
-    if (file) {
-      const error = validateFile(file);
-      if (error) {
-        alert(error);
-        setUploadedFile(null);
-        setValue('photograph', null);
-        return;
-      }
-      setUploadedFile(file);
-      setValue('photograph', file, { shouldValidate: true });
-      clearErrors('photograph');
-    }
-  };
-
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    setDragOver(true);
-  };
-
-  const handleDragLeave = (e) => {
-    e.preventDefault();
-    setDragOver(false);
-  };
 
   const onSubmit = async (data) => {
     console.log('Form submission started with data:', data);
@@ -88,19 +24,19 @@ const RegistrationForm = () => {
     setSubmitStatus(null);
 
     try {
-      // Additional validation for photograph (react-hook-form should handle other fields)
-      if (!uploadedFile) {
-        setError('photograph', { 
+      // Additional validation for photo link
+      if (!data.photoLink) {
+        setError('photoLink', { 
           type: 'required', 
-          message: 'Photograph is required' 
+          message: 'Photo link is required' 
         });
-        throw new Error('Please upload your photograph');
+        throw new Error('Please provide your photo link');
       }
 
       // Google Sheets Web App URL
       const googleSheetsURL = 'https://script.google.com/macros/s/AKfycbyrIYSXOweYXXhH8FoAUtT5oaQ-Lm1nVFQCqlCwU8wiLEn_g4hur7QKO3UH7fPgkPIK/exec';
       
-      // Prepare data as JSON to match Google Apps Script expectations
+      // Prepare data for Google Apps Script
       const submissionData = {
         name: data.fullName, // Script expects 'name'
         riotId: data.riotId,
@@ -108,30 +44,13 @@ const RegistrationForm = () => {
         email: data.email,
         mobileNumber: data.mobile, // Script expects 'mobileNumber'
         city: data.city,
+        photoLink: data.photoLink, // Google Photos or iCloud link
         agreeToTerms: data.agreeToTerms ? 'Yes' : 'No',
         submissionDate: new Date().toLocaleString()
       };
-      
-      // Handle file upload - convert to base64 as expected by script
-      if (uploadedFile) {
-        const reader = new FileReader();
-        const fileBase64 = await new Promise((resolve, reject) => {
-          reader.onload = () => {
-            // Remove the data URL prefix to get just the base64 data
-            const base64Data = reader.result.split(',')[1];
-            resolve(base64Data);
-          };
-          reader.onerror = reject;
-          reader.readAsDataURL(uploadedFile);
-        });
-        
-        submissionData.fileData = fileBase64;
-        submissionData.filename = uploadedFile.name;
-        submissionData.mimeType = uploadedFile.type;
-      }
 
       console.log('Submitting form data to Google Sheets...');
-      console.log('Submission data:', { ...submissionData, fileData: submissionData.fileData ? 'base64 data' : 'none' });
+      console.log('Submission data:', submissionData);
 
       // Create a simple form submission that Google Apps Script can handle
       const form = new FormData();
@@ -152,7 +71,6 @@ const RegistrationForm = () => {
       setSubmitStatus('success');
       
       // Keep success message permanently (don't auto-clear)
-      setUploadedFile(null);
       
     } catch (error) {
       console.error('Submission error:', error);
@@ -348,71 +266,42 @@ const RegistrationForm = () => {
               </motion.div>
             </div>
 
-            {/* File Upload */}
+            {/* Photo Link */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
+              whileFocus="focus" 
+              variants={inputVariants}
             >
               <label className="block text-valorant-white font-orbitron font-bold mb-3 flex items-center">
-                <FaUpload className="mr-2 text-valorant-cyan" />
-                Upload Photograph *
+                <FaLink className="mr-2 text-valorant-cyan" />
+                Photograph Link *
               </label>
               
-              <div
-                onDrop={handleDrop}
-                onDragOver={handleDragOver}
-                onDragLeave={handleDragLeave}
-                className={`relative border-2 border-dashed rounded-lg p-8 text-center transition-all duration-300 cursor-pointer backdrop-blur-sm ${
-                  dragOver 
-                    ? 'border-valorant-red bg-valorant-red/20' 
-                    : uploadedFile 
-                      ? 'border-valorant-cyan bg-valorant-cyan/20' 
-                      : 'border-valorant-cyan/50 hover:border-valorant-cyan bg-black/30'
-                }`}
-              >
-                <input
-                  {...register('photograph')}
-                  type="file"
-                  accept="image/jpeg,image/png"
-                  onChange={handleFileChange}
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                />
-                
-                <div className="space-y-4">
-                  <FaUpload className={`mx-auto text-4xl ${uploadedFile ? 'text-valorant-cyan' : 'text-valorant-white/60'}`} />
-                  
-                  {uploadedFile ? (
-                    <div>
-                      <p className="text-valorant-cyan font-bold">File Selected:</p>
-                      <p className="text-valorant-white">{uploadedFile.name}</p>
-                      <p className="text-valorant-white/60 text-sm">
-                        Size: {(uploadedFile.size / 1024 / 1024).toFixed(2)} MB
-                      </p>
-                    </div>
-                  ) : (
-                    <div>
-                      <p className="text-valorant-white font-bold">
-                        Drop your photograph here or click to browse
-                      </p>
-                      <p className="text-valorant-white/60 text-sm">
-                        Supports: JPEG, PNG (Max 5MB)
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-                  
-                  {errors.photograph && (
-                    <p className="text-valorant-red text-sm mt-2 flex items-center">
-                      <FaExclamationTriangle className="mr-1" />
-                      {errors.photograph.message}
-                    </p>
-                  )}
+              <input
+                {...register('photoLink', { 
+                  required: 'Photo link is required',
+                  pattern: {
+                    value: /^https?:\/\/.+/,
+                    message: 'Please enter a valid URL (must start with http:// or https://)'
+                  }
+                })}
+                type="url"
+                className="input-futuristic w-full rounded-lg"
+                placeholder="https://photos.google.com/share/... or https://icloud.com/photos/..."
+              />
+              
+              {errors.photoLink && (
+                <p className="text-valorant-red text-sm mt-2 flex items-center">
+                  <FaExclamationTriangle className="mr-1" />
+                  {errors.photoLink.message}
+                </p>
+              )}
               
               <p className="text-valorant-white/80 text-sm mt-3 leading-relaxed">
-                Please upload a clear, recent photograph. Your face must be clearly visible for identification purposes. 
-                This photo will be used for verification during the tournament check-in process.
+                Please provide a shareable link to your photograph from Google Photos, iCloud, or any other photo sharing service. 
+                Make sure the link is public and accessible for verification during the tournament check-in process.
               </p>
             </motion.div>
 
