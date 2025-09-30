@@ -113,33 +113,45 @@ const RegistrationForm = () => {
       formData.append('agreeToTerms', data.agreeToTerms ? 'Yes' : 'No');
       formData.append('submissionDate', new Date().toLocaleString());
       
-      // Handle file upload (convert to base64)
+      // Handle file upload - send file info instead of base64 to avoid size issues
       if (uploadedFile) {
-        const reader = new FileReader();
-        const fileBase64 = await new Promise((resolve, reject) => {
-          reader.onload = () => resolve(reader.result);
-          reader.onerror = reject;
-          reader.readAsDataURL(uploadedFile);
-        });
-        formData.append('photograph', fileBase64);
         formData.append('photographName', uploadedFile.name);
         formData.append('photographSize', uploadedFile.size);
+        formData.append('photographType', uploadedFile.type);
+        formData.append('hasPhotograph', 'Yes');
+        
+        // Try to include base64 but don't fail if it's too large
+        try {
+          const reader = new FileReader();
+          const fileBase64 = await new Promise((resolve, reject) => {
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(uploadedFile);
+          });
+          // Only include if file is under 1MB to avoid Google Sheets limits
+          if (uploadedFile.size < 1024 * 1024) {
+            formData.append('photograph', fileBase64);
+          }
+        } catch (fileError) {
+          console.log('File processing skipped due to size/error:', fileError);
+        }
+      } else {
+        formData.append('hasPhotograph', 'No');
       }
 
       console.log('Submitting form data to Google Sheets...');
+      console.log('Form data entries:', Array.from(formData.entries()).map(([key, value]) => 
+        key === 'photograph' ? [key, 'base64 data'] : [key, value]
+      ));
 
-      // Submit to Google Sheets with timeout
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
-
+      // Submit to Google Sheets with proper headers and CORS handling
       await fetch(googleSheetsURL, {
         method: 'POST',
         body: formData,
-        signal: controller.signal
+        mode: 'no-cors' // Required for Google Apps Script
       });
 
-      clearTimeout(timeoutId);
-
+      // With no-cors mode, we can't read the response, so we assume success
       console.log('Form submitted successfully to Google Sheets');
       setSubmitStatus('success');
       
